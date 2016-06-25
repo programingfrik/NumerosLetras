@@ -11,7 +11,7 @@ with open("pruebas.csv") as pruebas:
     prueba = pruebas.readline()
     print ("tipo | numero | esperado | calculado | resultado")
     while prueba != "":
-        partes = prueba.replace("\n", "").split("|")
+        partes = prueba.replace("\n", "").split(",")
         numero = partes[1].replace(" ", "")
         if (partes[0] == "natural"):
             numero = int(numero)
