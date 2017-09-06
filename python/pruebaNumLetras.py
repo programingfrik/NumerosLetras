@@ -7,7 +7,7 @@ from numLetras import *
 
 fallo = False
 
-with open("pruebas.csv") as pruebas:
+with open("../pruebas.csv") as pruebas:
     prueba = pruebas.readline()
     print ("tipo | numero | esperado | calculado | resultado")
     while prueba != "":
