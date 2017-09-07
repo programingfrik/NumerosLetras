@@ -6,10 +6,11 @@ from numLetras import *
 # Esto es para probar la versión de python de la librería para convertir de números a letras.
 
 fallo = False
-
+cant = 0
+cante = 0
 with open("../pruebas.csv") as pruebas:
     prueba = pruebas.readline()
-    print ("tipo | numero | esperado | calculado | resultado")
+    print ("tipo\nnumero\nesperado\ncalculado\nresultado\n")
     while prueba != "":
         partes = prueba.replace("\n", "").split(",")
         numero = partes[1].replace(" ", "")
@@ -32,16 +33,15 @@ with open("../pruebas.csv") as pruebas:
         else:
             resultado = "incorrecto"
             fallo = True
-        print ("{} | {} | {} | {} | {}".format(partes[0], partes[1],
+            cante += 1
+        print ("{}\n{:,}\n{}\n{}\n{}\n".format(partes[0], numero,
                                                partes[2], calculado,
                                                resultado))
+        cant += 1
         prueba = pruebas.readline()
 
-if fallo:
-    print("Una o más pruebas fallaron, por favor revise su vaina!")
-else:
-    print("Todas las pruebas parecen haber sido satisfactorias!")
-        
-print("Listo!")
+print("{} pruebas con errores de {} pruebas.".format(cante, cant))
+
+print("Listo!!")
 
 sys.exit(int(fallo))
