@@ -1,61 +1,66 @@
 using System;
+using System.IO;
 
 /// <summary>
 ///   La clase pruebaNumerosLetras que sirve pa' saludar a ed-mundo!!
 /// </summary>
 public class pruebaNumerosLetras
 {
-    public struct Prueba
-    {
-        public double valor;
-        public String esperado;
-
-        public override String ToString()
-        {
-            return String.Format("{valor = \"{0}\"; esperado = \"{1}\"",
-                                 valor, esperado);
-        }
-    }
-    
     public static void Main(String[] args)
     {
-        Prueba[] pruebas = new Prueba[]{
-            new Prueba{valor = 147986342342551, esperado = "ciento cuarenta y siete billones novecientos ochenta y seis mil trescientos cuarenta y dos millones trescientos cuarenta y dos mil quinientos cincuenta y uno"},
-            new Prueba{valor = 211000, esperado = "doscientos once mil"},
-            new Prueba{valor = 200000, esperado = "doscientos mil"},
-            new Prueba{valor = 1000, esperado = "mil"},
-            new Prueba{valor = 11000, esperado = "once mil"},
-            new Prueba{valor = 1000000, esperado = "un millón"},
-            new Prueba{valor = 11000000, esperado = "once millones"},
-            new Prueba{valor = 21000000, esperado = "veintiun millones"},
-            new Prueba{valor = 31000000, esperado = "treinta y un millones"},
-            new Prueba{valor = 11000000, esperado = "once millones"},
-            new Prueba{valor = 44.5, esperado = "cuarenta y cuatro punto cincuenta"},
-            new Prueba{valor = 44.05, esperado = "cuarenta y cuatro punto cinco"},
-            new Prueba{valor = 21, esperado = "veintiuno"},
-            new Prueba{valor = 61, esperado = "sesenta y uno"},
-            new Prueba{valor = 61000, esperado = "sesenta y un mil"},
-            new Prueba{valor = 101000, esperado = "ciento un mil"}
-        };
         int cant = 0, cante = 0;
+        String linea, numero;
+        String[] partes;
+        double valor;
 
-        Console.WriteLine("Número\nEn letras\nLetras esperadas\nEstado\n");
-        foreach (Prueba prueba in pruebas)
+        using (StreamReader fichero = new StreamReader
+               (Path.Combine("..", "pruebas.csv")))
         {
-            Console.Write
-                ("{0}\n\"{1}\"\n\"{2}\"", prueba.valor.ToString("#,##0.00"),
-                 NumerosLetras.decimalLetras(prueba.valor), prueba.esperado);
-            if (NumerosLetras.decimalLetras(prueba.valor) == prueba.esperado)
-                Console.WriteLine("\ncorrecto\n");
-            else
+            linea = fichero.ReadLine();
+
+            Console.WriteLine
+                ("\nNúmero\nEn letras\nLetras esperadas\nEstado\n");
+
+            while (linea != null)
             {
-                Console.WriteLine("\nincorrecto\n");
-                cante ++;
+                partes = linea.Split(',');
+
+                if (partes[1].Replace(" ", "").Length > 28)
+                {
+                    Console.WriteLine
+                        ("Esta cifra es demasiado grande será "
+                         + "ignorada {0}.\n", partes[1]);
+                    linea = fichero.ReadLine();
+                    continue;
+                }
+                
+                valor = double.Parse(partes[1].Replace(" ", ""));
+                
+                if (partes[0] == "moneda")
+                    numero = NumerosLetras.monedaLetras
+                        (valor, "pesos", "centavos");
+                else
+                    numero = NumerosLetras.decimalLetras(valor);
+
+                Console.Write
+                    ("{0}\n\"{1}\"\n\"{2}\"",
+                     valor.ToString("#,##0.00"),
+                     numero,
+                     partes[2]);
+                if (numero == partes[2])
+                    Console.WriteLine("\ncorrecto\n");
+                else
+                {
+                    Console.WriteLine("\nincorrecto\n");
+                    cante ++;
+                }
+                cant ++;
+                linea = fichero.ReadLine();
             }
-            cant ++;
         }
 
-        Console.WriteLine("{0} pruebas con errores de {1} pruebas.", cante, cant);
+        Console.WriteLine("{0} pruebas con errores de {1} pruebas.",
+                          cante, cant);
         Console.WriteLine("Listo!!");
     }
 }

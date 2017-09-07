@@ -8,27 +8,31 @@ public class NumerosLetras {
     // un arreglo para nombrar las unidades 
     // descenas y centenas
     private static string[,] nomtrio = {
-        {"uno ", "dos ", "tres ", "cuatro ", "cinco ", "seis ", "siete ", "ocho ",
-         "nueve "},
-        {"dieci", "veinti", "treinta y ", "cuarenta y ", "cincuenta y ", "sesenta y ",
-         "setenta y ", "ochenta y ", "noventa y "},
-        {"ciento ", "doscientos ", "trescientos ", "cuatroscientos ", "quinientos ",
-         "seiscientos ", "setecientos ", "ochocientos ", "novecientos "}
+        {"uno ", "dos ", "tres ", "cuatro ", "cinco ", "seis ",
+         "siete ", "ocho ", "nueve "},
+        {"dieci", "veinti", "treinta y ", "cuarenta y ",
+         "cincuenta y ", "sesenta y ", "setenta y ", "ochenta y ",
+         "noventa y "},
+        {"ciento ", "doscientos ", "trescientos ", "cuatroscientos ",
+         "quinientos ", "seiscientos ", "setecientos ",
+         "ochocientos ", "novecientos "}
     };
 
     // estos son numeros que son excepciones que se pueden combinar en
     // tres digitos.
     private static long[] excnum = new long[]
-        {10, 11, 12, 13, 14, 15, 16, 20, 22, 23, 26, 30, 40, 50, 60, 70, 80, 90, 100};
+        {10, 11, 12, 13, 14, 15, 16, 20, 22, 23, 26, 30, 40, 50, 60,
+         70, 80, 90, 100};
     private static string[] excnom = new string[]
-        {"diez ", "once ", "doce ", "trece ", "catorce ", "quince ", "dieciseís ",
-         "veinte ", "veintidós ", "veintitrés ", "veintiséis ", "treinta ",
-         "cuareinta ", "cincuenta ", "sesenta ", "setenta ", "ochenta ", "noventa ",
-         "cien "};
+        {"diez ", "once ", "doce ", "trece ", "catorce ", "quince ",
+         "dieciseís ", "veinte ", "veintidós ", "veintitrés ",
+         "veintiséis ", "treinta ", "cuareinta ", "cincuenta ",
+         "sesenta ", "setenta ", "ochenta ", "noventa ", "cien "};
 	
     // estos son los nombres para las combinaciones
     private static string[] llones = new string[]
-        {"mi", "bi", "tri", "cuatri", "quinti", "sisti", "septi", "octi", "nuevi"};
+        {"mi", "bi", "tri", "cuatri", "quinti", "sisti", "septi",
+         "octi", "nuevi"};
 
     /// <summary>
     /// Una funcion que transforma un trio de digitos (unidades,
@@ -43,8 +47,11 @@ public class NumerosLetras {
         string retorno = "";
 
         // se trata de alguna excepcion ?
-        for (int cont = 0; cont < excnum.Length; cont++) {
-            if ((excnum[cont] < 99) && (((valor - excnum[cont]) % 100) == 0)) {
+        for (int cont = 0; cont < excnum.Length; cont++)
+        {
+            if ((excnum[cont] < 99)
+                && (((valor - excnum[cont]) % 100) == 0))
+            {
                 // si se trata de una exepcion en las descenas
                 // y ademas hay centenas
                 retorno = excnom[cont];
@@ -73,7 +80,8 @@ public class NumerosLetras {
     /// <summary>
     /// Una funcion que convierte una cantidad entera en letras.
     /// </summary>
-    /// <param name="cantidad">La cantidad que se desea convertir.</param>
+    /// <param name="cantidad">La cantidad que se desea convertir.
+    /// </param>
     /// <returns>El entero en letras.</returns>
     public static string ConvNumLetras(long valor) {
         int pos = 0;
@@ -94,22 +102,28 @@ public class NumerosLetras {
             valb = (int)(valor % 1000);
             valor = valor / 1000;
             
-            if ((pos > 0) && (vala == 1) && (valb == 0) && (valor == 0))
+            if ((pos > 0) && (vala == 1) && (valb == 0)
+                && (valor == 0))
                 // si esta es la iteracion mayor que 0 y
                 // vala es 1 y valb es 0 ( 000 001 XXX ... )
                 // y valor ya es 0 (no quedan mas cifras)
-                retorno.Insert(0, String.Format("{0}llón ", llones[pos - 1]));
+                retorno.Insert(0, String.Format
+                               ("{0}llón ", llones[pos - 1]));
             else if ((pos > 0) && (vala + valb > 0))
                 // si no, si estamos en los llones y
                 // vala o valb tienen valor (es mas de un llon)
-                retorno.Insert(0, String.Format("{0}llones ", llones[pos - 1]));
+                retorno.Insert(0, String.Format
+                               ("{0}llones ", llones[pos - 1]));
 
-            if ((pos > 0) && ((vala % 10) == 1) && ((vala % 100) != 11)) {
+            if ((pos > 0) && ((vala % 10) == 1)
+                && ((vala % 100) != 11))
+            {
                 // si estamos en los llones y vala tiene 1 y no se
                 // trata de un 11 (XXX XX1 XXX ...)
                 temp = trio(vala);
                 retorno.Insert(0, String.Format
-                               ("{0} ", temp.Substring(0, temp.Length - 2)) );
+                               ("{0} ", temp.Substring
+                                (0, temp.Length - 2) ));
             }
             else if (vala > 0)
                 // si no, si vala tiene valor
@@ -121,11 +135,12 @@ public class NumerosLetras {
             else if (((valb % 10) == 1) && ((valb % 100) != 11)) {
                 temp = trio(valb);
                 retorno.Insert(0, String.Format
-                               ("{0} mil ", temp.Substring(0, temp.Length - 2)) );
+                               ("{0} mil ", temp.Substring
+                                (0, temp.Length - 2) ));
             }
             else if (valb > 1)
-                retorno.Insert(0, String.Format("{0}mil ", trio(valb)));
-			
+                retorno.Insert(0, String.Format
+                               ("{0}mil ", trio(valb)));
             pos++;
         }
 
@@ -145,7 +160,8 @@ public class NumerosLetras {
     /// a la unidad para esta moneda.</param>
     /// <returns>La cadena con el numero transformado en monedas
     /// en letras</returns>
-    public static String monedaLetras(double cantidad, String nmoneda, String ncentavo)
+    public static String monedaLetras
+        (double cantidad, String nmoneda, String ncentavo)
     {
         String[] partes = cantidad.ToString().Split('.');
         String letras;
@@ -153,7 +169,7 @@ public class NumerosLetras {
             
         entera = Int64.Parse(partes[0]);
             
-        letras = ConvNumLetras(entera) + nmoneda;
+        letras = ConvNumLetras(entera) + " " + nmoneda;
             
         // si tiene una parte decimal que no esta en blanco
         if ((partes.Length > 1) && (!partes[1].Equals(String.Empty)))
